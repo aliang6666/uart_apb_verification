@@ -1,5 +1,5 @@
 
-class apb_trans extends uvm_sequence_item;
+class reg_trans extends uvm_sequence_item;
 //------------------------------------------
 // Data Members (Outputs rand, inputs non-rand)
 //------------------------------------------
@@ -23,7 +23,7 @@ class apb_trans extends uvm_sequence_item;
 		//
 	}
 	// 块注册
-	`uvm_object_utils_begin(apb_trans)
+	`uvm_object_utils_begin(reg_trans)
 		`uvm_field_int(PADDR	, UVM_ALL_ON)
 		`uvm_field_int(PWDATA	, UVM_ALL_ON)
 		`uvm_field_int(PRDATA	, UVM_ALL_ON)
@@ -34,7 +34,7 @@ class apb_trans extends uvm_sequence_item;
 		`uvm_field_int(PSLVERR	, UVM_ALL_ON)
 	`uvm_object_utils_end
 	
-	function new(string name = "apb_trans")
+	function new(string name = "reg_trans")
 		super.new(name);
 	endfunction
 	
