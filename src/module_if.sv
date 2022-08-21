@@ -1,4 +1,4 @@
-interface aph_intf(input PCLK,input PRESETn);
+interface apb_intf(input PCLK,input PRESETn);
 
   logic[31:0] PADDR;
   logic[31:0] PRDATA;
@@ -18,7 +18,7 @@ interface aph_intf(input PCLK,input PRESETn);
 
   COVER_PSEL: cover property(psel_valid);***/
 
-endinterface: aph_intf
+endinterface: apb_intf
 
 interface uart_interrupt(input PCLK,input PRESETn);
 	logic 	IRQ;
