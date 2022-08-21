@@ -3,7 +3,7 @@
 
 class reg_driver extends uvm_driver#(reg_trans);
 	
-	//接口，因为要驱动
+	//设置接口，因为要驱动
 	virtual apb_intf dr_if;
 	
 	`uvm_component_utils(reg_driver);
@@ -31,14 +31,50 @@ endclass
 2.拿取trans  seq_item_port.get_next_item
 ******/
 task my_driver::main_phase(uvm_phase phase);
-   dr_if.data <= 8'b0;
-   dr_if.valid <= 1'b0;
+	//初始化输出端口
+   dr_if.PADDR <= 32'b0;
+   dr_if.PWDATA <= 32'b0;
    while(!dr_if.rst_n)//等待初始化完
-      @(posedge dr_if.clk);
+      @(posedge dr_if.PCLK);
    while(1) begin
       seq_item_port.get_next_item(req);//req是自定义的trans
-      drive_one_pkt(req);
-      seq_item_port.item_done();
+      drive_one_pkt(req);//驱动一个trans
+      seq_item_port.item_done();//告知seq驱动完
    end
+endtask
+
+//驱动一个trans
+task drive_one_pkt(reg_trans rtr);
+	//每次传输都要进入初始状态
+   dr_if.PSEL <= 0;
+   dr_if.PENABLE <= 0;
+   dr_if.PRDATA <= 0;
+	case(rtr.PWRITE)
+        `WRITE: begin 
+				  @(posedge dr_if.PCLK);
+                  dr_if.PWRITE <= rtr.PWRITE;
+                  dr_if.PSEL <= 1;
+				  dr_if.PADDR <= rtr.PADDR;
+				  dr_if.PWDATA <= rtr.PWDATA;				  
+				  @(posedge dr_if.PCLK);
+				  dr_if.PENABLE <= 1;
+				  while (!dr_if.PREADY)//等待总线slave应答，应答ok为1
+					@(posedge dr_if.PCLK);
+				  @(posedge dr_if.PCLK);
+                end
+        `READ:  begin 
+				  @(posedge dr_if.PCLK);
+                  dr_if.PWRITE <= rtr.PWRITE;
+                  dr_if.PSEL <= 1;
+				  dr_if.PADDR <= rtr.PADDR;
+				  @(posedge dr_if.PCLK);
+					dr_if.PENABLE <= 1;
+				  while (!dr_if.PREADY)//等待总线slave应答，应答ok为1
+					@(posedge dr_if.PCLK);
+				  rtr.PRDATA <= dr_if.PRDATA;//有应答则在这个时钟下读取数据
+                end
+        default: $error("command %b is illegal", rtr.PWRITE);
+      endcase
+	
 endtask
 

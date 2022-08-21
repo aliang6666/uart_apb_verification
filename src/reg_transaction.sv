@@ -6,18 +6,17 @@ class reg_trans extends uvm_sequence_item;
 	rand bit  [31:0] PADDR	   ;
 	rand bit  [31:0] PWDATA	   ;
 		 bit  [31:0] PRDATA	   ;
-	rand bit  		 PWRITE	   ;
+	rand bit  		 PWRITE	   ;//看是读总线0还是写总线1
 	rand bit  		 PENABLE   ;
 	rand bit  		 PSEL	   ;
 	     bit  		 PREADY	   ;
 		 bit  		 PSLVERR   ;
-		 bit		 state_apb ;//看是读总线0还是写总线1
 	constraint c_cons{
 		//合法地址
 		soft PADDR[31:7] == 0;//soft PADDR[6:2]
 		soft PADDR[1:0] == 0;
-		soft state_apb == `READ -> PADDR[6:2] inside {`DR,`IER,`IIR,`LCR,`MCR,`LSR,`MSR,`DIV1,`DIV2};
-		soft state_apb == `WIRTE -> PADDR[6:2] inside {`DR,`IER,`FCR,`LCR,`MCR,`DIV1,`DIV2};
+		soft PWRITE == `READ -> PADDR[6:2] inside {`DR,`IER,`IIR,`LCR,`MCR,`LSR,`MSR,`DIV1,`DIV2};
+		soft PWRITE == `WIRTE -> PADDR[6:2] inside {`DR,`IER,`FCR,`LCR,`MCR,`DIV1,`DIV2};
 		//合法写入数据
 		soft PWDATA	[31:8] == 0;//数据有效位8位宽
 		//
