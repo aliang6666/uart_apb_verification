@@ -25,9 +25,9 @@ import uvm_pkg::*;
 	end
 	//interface inistail
 	//1.划分原则，不同功能的划为一片
-	aph_intf apb_itf(.*);
-	uart_interrupt u_irq_itf(.*);
-	uart_intf uart_itf(.*);
+	aph_intf apb_if(.*);
+	uart_interrupt u_irq_if(.*);
+	uart_intf uart_if(.*);
 	
 	
 	uart_1655 uart_1655_inst(
@@ -62,9 +62,9 @@ import uvm_pkg::*;
 	  );
 
 	initial begin 
-		uvm_config_db #(virtual aph_intf)::set(null,"tb_top","apb_itf",apb_itf);
-		uvm_config_db #(virtual uart_interrupt)::set(null,"tb_top","u_irq_itf",u_irq_itf);
-		uvm_config_db #(virtual uart_intf)::set(null,"tb_top","apb_itf",uart_itf);
+		uvm_config_db #(virtual aph_intf)::set(null,"tb_top","apb_itf",apb_if);
+		uvm_config_db #(virtual uart_interrupt)::set(null,"tb_top","u_irq_itf",u_irq_if);
+		uvm_config_db #(virtual uart_intf)::set(null,"tb_top","apb_itf",uart_if);
 	end
 
 endmodule
