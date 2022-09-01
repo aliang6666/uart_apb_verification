@@ -40,10 +40,10 @@ endclass
 			tr.PADDR = vif.PADDR;
 			tr.PWRITE = vif.PWRITE;
 			if(APB.PWRITE)begin
-				tr.PWDATA = vif.PWDATA;
+				tr.PDATA = vif.PWDATA;
 			end
 			else begin
-				tr.PRDATA = vif.PRDATA;
+				tr.PDATA = vif.PRDATA;
 			end	
 		end
 	endtask

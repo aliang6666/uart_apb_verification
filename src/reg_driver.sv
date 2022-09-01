@@ -31,7 +31,7 @@ endclass
 task my_driver::main_phase(uvm_phase phase);
 	//初始化输出端口
    dr_if.PADDR <= 32'b0;
-   dr_if.PWDATA <= 32'b0;
+   dr_if.PDATA <= 32'b0;
    while(!dr_if.rst_n)//等待初始化完
       @(posedge dr_if.PCLK);
    forever begin
@@ -51,9 +51,9 @@ task drive_one_pkt(reg_trans rtr);
 		`WRITE: begin 
 				  @(posedge dr_if.PCLK);
 				  dr_if.PWRITE <= rtr.PWRITE;	//读写命令
-				  dr_if.PSEL <= rtr.PSEL;		//片选使能
+				  dr_if.PSEL <= 1'd1;		//片选使能
 				  dr_if.PADDR <= rtr.PADDR;		//写的地址
-				  dr_if.PWDATA <= rtr.PWDATA;	//写的数据			  
+				  dr_if.PWDATA <= rtr.PDATA;	//写的数据			  
 				  @(posedge dr_if.PCLK);
 				  dr_if.PENABLE <= 1;			//第二个时钟使能
 				  while (!dr_if.PREADY)//等待总线slave应答，应答ok为1
@@ -69,7 +69,7 @@ task drive_one_pkt(reg_trans rtr);
 					dr_if.PENABLE <= 1;
 				  while (!dr_if.PREADY)//等待总线slave应答，应答ok为1
 					@(posedge dr_if.PCLK);
-				  rtr.PRDATA <= dr_if.PRDATA;//有应答则在这个时钟下读取数据
+				  rtr.PDATA <= dr_if.PRDATA;//有应答则在这个时钟下读取数据
 				  @(posedge dr_if.PCLK);
 				end
 		default: $error("command %b is illegal", rtr.PWRITE);

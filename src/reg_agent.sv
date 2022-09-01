@@ -4,7 +4,7 @@ class reg_agent extends uvm_agent;
    reg_sequencer  sqr;
    reg_driver     drv;
    reg_monitor    mon;
-   //从monitor中传trans
+   //把monitor中的trans传出来，更有层次，方便处理，可以多接
    uvm_analysis_port #(reg_trans) ap;
    
 	`uvm_component_uitls(reg_agent)
@@ -26,7 +26,7 @@ endclass
 			drv = reg_monitor::type_id::create("drv", this);
 	    end
 	    mon = reg_monitor::type_id::create("mon", this);
-		ap = new("ap", this);//发送给monitor的tlm
+		ap = new("ap", this);//接收monitor的tlm
 	endfunction
 	
 	//使用的连接，包括sqr和dr的连接，还有把monitor的接口连接出来
