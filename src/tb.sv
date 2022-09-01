@@ -27,7 +27,8 @@ import uvm_pkg::*;
 	//1.划分原则，不同功能的划为一片
 	aph_intf apb_if(.*);
 	uart_interrupt u_irq_if(.*);
-	uart_intf uart_if(.*);
+	uart_interface uart_if(.*);
+	modem_interface modem_if(.*);
 	
 	
 	uart_1655 uart_1655_inst(
@@ -40,23 +41,23 @@ import uvm_pkg::*;
 	  .PWRITE		(apb_itf.PWRITE	),
 	  .PENABLE		(apb_itf.PENABLE	),                                       
 	  .PSEL			(apb_itf.PSEL	),
-	  . PREADY		(apb_itf.PREADY	),
-	  . PSLVERR		(apb_itf.PSLVERR	),
+	  .PREADY		(apb_itf.PREADY	),
+	  .PSLVERR		(apb_itf.PSLVERR	),
 		// UART interrupt request line
-	  . IRQ			(u_irq_itf.IRQ		),
+	  .IRQ			(u_irq_itf.IRQ		),
 		// UART signals
 		// serial input/output
 	  .TXD			(uart_itf.TXD),
 	  .RXD			(uart_itf.RXD),
 		// modem signals
-	  . nRTS		(uart_itf.nRTS	),
-	  . nDTR		(uart_itf.nDTR	),
-	  . nOUT1		(uart_itf.nOUT1	),
-	  . nOUT2		(uart_itf.nOUT2	),
-	  .nCTS			(uart_itf.nCTS		),
-	  .nDSR			(uart_itf.nDSR		),
-	  .nDCD			(uart_itf.nDCD		),
-	  .nRI			(uart_itf.nRI		),
+	  .nRTS			(modem_if.nRTS	),
+	  .nDTR			(modem_if.nDTR	),
+	  .nOUT1		(modem_if.nOUT1	),
+	  .nOUT2		(modem_if.nOUT2	),
+	  .nCTS			(modem_if.nCTS		),
+	  .nDSR			(modem_if.nDSR		),
+	  .nDCD			(modem_if.nDCD		),
+	  .nRI			(modem_if.nRI		),
 		// Baud rate generator output - needed for checking
 	  .baud_o		(uart_itf.baud_o)
 	  );

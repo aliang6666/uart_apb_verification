@@ -6,9 +6,11 @@ class reg_trans extends uvm_sequence_item;
 	rand bit  [31:0] PADDR	   ;
 	rand bit  [31:0] DATA	   ;//读写都用同一个数据
 	rand bit  		 PWRITE	   ;//看是读总线0还是写总线1
+	rand bit 		 delay	   ;
 
-
-	
+	constraint delay_bounds {
+	  delay inside {[1:20]};
+	}
 	
 	constraint c_cons{
 		//合法地址

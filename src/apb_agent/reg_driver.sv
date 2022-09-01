@@ -15,7 +15,7 @@ class reg_driver extends uvm_driver#(reg_trans);
 	virtual function build_phase(build_phase phase)
 		super.build_phase(phase);
 		//连接到接口
-		if(!uvm_config_db#(virtual apb_intf)::get(this, "apb_intf", "dr_if", dr_if))
+		if(!uvm_config_db#(virtual apb_intf)::get(this, "", "dr_if", dr_if))
 			 `uvm_fatal("reg_driver", "virtual interface must be set for vif!!!")
 	endfunction
 	
@@ -47,6 +47,8 @@ task drive_one_pkt(reg_trans rtr);
     dr_if.PSEL <= 0;
     dr_if.PENABLE <= 0;
     dr_if.PRDATA <= 0;
+	repeat(rtr.delay)
+		@(posedge dr_if.PCLK);  
 	case(rtr.PWRITE)//读写功能选择
 		`WRITE: begin 
 				  @(posedge dr_if.PCLK);

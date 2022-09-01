@@ -26,13 +26,15 @@ endinterface:uart_interrupt
 
 interface uart_interface(input 	PCLK,input PRESETn);
 	logic			TXD     ;
-	logic			RXD     ;
-			
+	logic			RXD     ;			
+endinterface: uart_interface
+
+interface modem_interface(input 	PCLK,input PRESETn);			
 	logic			nCTS    ;
 	logic			nRTS	;
 	logic			nDTR	;
-	logic	[7:0]	nOUT1	;//当前波特率的输出的16倍，第8位
-	logic	[7:0]	nOUT2	;//高八位
+	logic			nOUT1	;//当前波特率的输出的16倍，第8位
+	logic			nOUT2	;//高八位
 	logic			nCTS	;	
 	logic		  	nDSR	;	
 	logic		  	nDCD	;	
