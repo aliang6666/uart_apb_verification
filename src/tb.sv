@@ -1,12 +1,15 @@
 
-`include "module_if.sv"
 `include "uvm_macros.svh"
+import uvm_pkg::*;
 
+import apb_agent_pkg::*;
+`include "apb_test.sv"
+`include "base_test.sv"
+`include "reg_env.sv"
 
 
 module tb();
 
-import uvm_pkg::*;
 
 	logic PCLK;
 	logic PRESETn
@@ -63,9 +66,14 @@ import uvm_pkg::*;
 	  );
 
 	initial begin 
-		uvm_config_db #(virtual aph_intf)::set(null,"tb_top","apb_itf",apb_if);
-		uvm_config_db #(virtual uart_interrupt)::set(null,"tb_top","u_irq_itf",u_irq_if);
-		uvm_config_db #(virtual uart_intf)::set(null,"tb_top","apb_itf",uart_if);
+	//把接口数据给最顶层，方便各层的调用
+		uvm_config_db #(virtual aph_intf)::set(null,"uvm_test_top","apb_itf",apb_if);
+		uvm_config_db #(virtual uart_interrupt)::set(null,"uvm_test_top","u_irq_itf",u_irq_if);
+		uvm_config_db #(virtual uart_intf)::set(null,"uvm_test_top","uart_itf",uart_if);
+	end
+	//运行用例
+	initial begin
+		run_test();
 	end
 
 endmodule

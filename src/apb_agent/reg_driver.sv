@@ -1,6 +1,3 @@
-`include 	param_def.v
-
-
 class reg_driver extends uvm_driver#(reg_trans);
 	
 	//设置接口，因为要驱动
@@ -8,14 +5,14 @@ class reg_driver extends uvm_driver#(reg_trans);
 	
 	`uvm_component_utils(reg_driver);
 
-	function new(string name = "reg_driver")
-		super.new(name);
+	function new(string name = "reg_driver", uvm_component parent = null);
+		super.new(name,parent);
 	endfunction
 	
-	virtual function build_phase(build_phase phase)
+	virtual function void build_phase(uvm_phase phase);
 		super.build_phase(phase);
 		//连接到接口
-		if(!uvm_config_db#(virtual apb_intf)::get(this, "", "dr_if", dr_if))
+		if(!uvm_config_db#(virtual apb_intf)::get(this.parent, "", "dr_if", dr_if))
 			 `uvm_fatal("reg_driver", "virtual interface must be set for vif!!!")
 	endfunction
 	
@@ -28,7 +25,7 @@ endclass
 2.拿取trans  seq_item_port.get_next_item
 驱动总线
 ******/
-task my_driver::main_phase(uvm_phase phase);
+task reg_driver::main_phase(uvm_phase phase);
 	//初始化输出端口
    dr_if.PADDR <= 32'b0;
    dr_if.PDATA <= 32'b0;
@@ -42,7 +39,7 @@ task my_driver::main_phase(uvm_phase phase);
 endtask
 
 //驱动一个trans
-task drive_one_pkt(reg_trans rtr);
+task reg_driver::drive_one_pkt(reg_trans rtr);
 	//每次传输都要进入初始状态
     dr_if.PSEL <= 0;
     dr_if.PENABLE <= 0;
@@ -55,7 +52,7 @@ task drive_one_pkt(reg_trans rtr);
 				  dr_if.PWRITE <= rtr.PWRITE;	//读写命令
 				  dr_if.PSEL <= 1'd1;		//片选使能
 				  dr_if.PADDR <= rtr.PADDR;		//写的地址
-				  dr_if.PWDATA <= rtr.PDATA;	//写的数据			  
+				  dr_if.PWDATA <= rtr.DATA;	//写的数据			  
 				  @(posedge dr_if.PCLK);
 				  dr_if.PENABLE <= 1;			//第二个时钟使能
 				  while (!dr_if.PREADY)//等待总线slave应答，应答ok为1
@@ -71,7 +68,7 @@ task drive_one_pkt(reg_trans rtr);
 					dr_if.PENABLE <= 1;
 				  while (!dr_if.PREADY)//等待总线slave应答，应答ok为1
 					@(posedge dr_if.PCLK);
-				  rtr.PDATA <= dr_if.PRDATA;//有应答则在这个时钟下读取数据
+				  rtr.DATA <= dr_if.PRDATA;//有应答则在这个时钟下读取数据
 				  @(posedge dr_if.PCLK);
 				end
 		default: $error("command %b is illegal", rtr.PWRITE);

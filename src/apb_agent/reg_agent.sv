@@ -7,10 +7,10 @@ class reg_agent extends uvm_agent;
    //把monitor中的trans传出来，更有层次，方便处理，可以多接
    uvm_analysis_port #(reg_trans) ap;
    
-	`uvm_component_uitls(reg_agent)
+	`uvm_component_utils(reg_agent)
 	
-	function new(string new = "reg_agent");
-		super.new(name);
+	function new(string name = "reg_agent", uvm_component parent = null);
+		super.new(name,parent);
 	endfunction
 	
 

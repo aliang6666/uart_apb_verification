@@ -19,7 +19,7 @@ interface apb_intf(input PCLK,input PRESETn);
   COVER_PSEL: cover property(psel_valid);***/
 
 endinterface: apb_intf
-
+/***
 interface uart_interrupt(input PCLK,input PRESETn);
 	logic 	IRQ;
 endinterface:uart_interrupt
@@ -41,3 +41,4 @@ interface modem_interface(input 	PCLK,input PRESETn);
 	
 	logic			baud_o	;//Baud rate generator output - needed for checking
 endinterface: modem_interface
+***/

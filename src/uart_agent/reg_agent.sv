@@ -1,14 +1,12 @@
-import apb_agent_pkg::*;
 
-class reg_env extends uvm_component;
+class reg_env extends uvm_env;
 	//成员注册
    reg_agent   i_agt;
 
    
-
-   uvm_tlm_analysis_fifo #(reg_trans) agt_mdl_fifo;
-   /****
    uvm_tlm_analysis_fifo #(my_transaction) agt_scb_fifo;
+   /****
+   uvm_tlm_analysis_fifo #(my_transaction) agt_mdl_fifo;
    uvm_tlm_analysis_fifo #(my_transaction) mdl_scb_fifo;
    *****/
    
@@ -18,7 +16,7 @@ class reg_env extends uvm_component;
 
    virtual function void build_phase(uvm_phase phase);
       super.build_phase(phase);
-      i_agt = reg_agent::type_id::create("i_agt", this);
+      i_agt = my_agent::type_id::create("i_agt", this);
       i_agt.is_active = UVM_ACTIVE;
       agt_scb_fifo = new("agt_scb_fifo", this);
    endfunction

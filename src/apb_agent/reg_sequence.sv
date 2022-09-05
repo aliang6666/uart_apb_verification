@@ -1,5 +1,5 @@
 class reg_sequence extends uvm_sequence #(reg_trans);
-   reg_transaction m_trans;
+   reg_trans m_trans;
 
    function new(string name= "reg_sequence");
       super.new(name);

@@ -5,7 +5,7 @@ class uart_driver extends uart_driver #(uart_seq_item);
 	uart_seq_item pkt;//接收到的seq_item
 	
 	function new(string name = "uart_driver", uvm_component parent = null);
-	  super.new(name, parent);
+		super.new(name,parent);
 	endfunction
 
 	extern function build_phase(uvm_phase phase);

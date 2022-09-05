@@ -17,7 +17,7 @@ class reg_trans extends uvm_sequence_item;
 		soft PADDR[31:7] == 0;//soft PADDR[6:2]
 		soft PADDR[1:0] == 0;
 		soft PWRITE == `READ -> PADDR[6:2] inside {`DR,`IER,`IIR,`LCR,`MCR,`LSR,`MSR,`DIV1,`DIV2};
-		soft PWRITE == `WIRTE -> PADDR[6:2] inside {`DR,`IER,`FCR,`LCR,`MCR,`DIV1,`DIV2};
+		soft PWRITE == `WRITE -> PADDR[6:2] inside {`DR,`IER,`FCR,`LCR,`MCR,`DIV1,`DIV2};
 		//合法写入数据
 		soft DATA	[31:8] == 0;//数据有效位8位宽
 	}
@@ -28,7 +28,7 @@ class reg_trans extends uvm_sequence_item;
 		`uvm_field_int(PWRITE	, UVM_ALL_ON)
 	`uvm_object_utils_end
 	
-	function new(string name = "reg_trans")
+	function new(string name = "reg_trans");
 		super.new(name);
 	endfunction
 	
