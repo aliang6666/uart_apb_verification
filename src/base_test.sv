@@ -5,10 +5,15 @@
 
 ***/
 import apb_agent_pkg::*;
+import uvm_pkg::*;
+`include "uvm_macros.svh"
+
+`include "reg_env.sv"
 class base_test extends uvm_test;
 	//成员注册
    reg_env   my_env;
 
+   `uvm_component_utils(base_test)
    
    function new(string name = "uvm_base_test", uvm_component parent);
       super.new(name, parent);
@@ -18,7 +23,7 @@ class base_test extends uvm_test;
       super.build_phase(phase);
       my_env = reg_env::type_id::create("my_env", this);
       //获取module的if,发送给driver
-	  if(!uvm_config_db #(virtual aph_intf)::get(this, "my_env.i_agt.drv", "apb_itf", my_env.i_agt.drv.dr_if)) beginy
+	  if(!uvm_config_db #(virtual aph_intf)::get(this, "my_env.i_agt.drv", "apb_itf", my_env.i_agt.drv.dr_if)) begin
 		`uvm_error("build_phase", "Unable to find APB interface in the uvm_config_db")
 	  end
 	  /**
@@ -32,11 +37,11 @@ class base_test extends uvm_test;
    endfunction
 
    extern virtual function void connect_phase(uvm_phase phase);   
-   `uvm_component_utils(base_test)
+   
 endclass
 
 //连接TML,并写明输入和输出方向
-function void my_env::connect_phase(uvm_phase phase);
+function void base_test::connect_phase(uvm_phase phase);
    super.connect_phase(phase);
    i_agt.ap.connect(agt_mdl_fifo.analysis_export);//monitor传出来的
 //   mdl.port.connect(agt_mdl_fifo.blocking_get_export);

@@ -1,0 +1,9 @@
+# vsim tb "+UVM_TESTNAME=apb_test" -do "run -all" 
+# Start time: 00:07:57 on Sep 06,2022
+# ** Note: (vsim-3812) Design is being optimized...
+# ** Error: ../src/tb.sv(25): Module 'aph_intf' is not defined.
+# ** Error: ../src/tb.sv(31): Module 'uart_1655' is not defined.
+# Optimization failed
+# Error loading design
+# End time: 00:07:58 on Sep 06,2022, Elapsed time: 0:00:01
+# Errors: 2, Warnings: 0

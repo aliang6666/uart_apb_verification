@@ -1,18 +1,12 @@
 
-`include "uvm_macros.svh"
-import uvm_pkg::*;
-
-import apb_agent_pkg::*;
 `include "apb_test.sv"
-`include "base_test.sv"
-`include "reg_env.sv"
-
+`include "module_if.sv"
 
 module tb();
 
 
 	logic PCLK;
-	logic PRESETn
+	logic PRESETn;
 
 	// Simple clock/reset
 	initial begin
